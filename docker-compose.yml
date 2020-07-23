@@ -11,6 +11,7 @@ services:
         MYSQL_ROOT_PASSWORD: 63eaQB9wtLqmNBpg
   
   api:
+    container_name: deno_api
     build: .
     restart: always
     depends_on: 
@@ -25,3 +26,6 @@ services:
       - DB_DATABASE=denoblog
       - DB_PASSWORD=63eaQB9wtLqmNBpg
       - TOKEN_SECRET=QA3GCPvnNO3e6x29dFfzbvIlP8pRNwif
+networks:
+  drash-app-network:
+    driver: bridge

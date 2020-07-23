@@ -4,6 +4,6 @@ WORKDIR /usr/app
 COPY . .
 RUN apk --no-cache add curl
 RUN curl -s https://raw.githubusercontent.com/muhibbudins/denomon/master/install.sh | sh
-RUN deno cache app.ts
+RUN deno cache depts.ts
 ENTRYPOINT [ "/usr/local/bin/denomon" ]
 CMD [ "--allow", "net,read,env", "app.ts"]

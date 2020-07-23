@@ -1,26 +1,25 @@
-import { Application, Router, Status } from "https://deno.land/x/oak/mod.ts"
-import logger from './middleware/logger.ts'
-import timer from './middleware/timer.ts'
-import routes from './routes.ts'
+import { Drash, config } from './depts.ts'
+import { HomeResource } from './src/resources/index.ts'
 
-const app = new Application()
-const router = new Router()
+const port = parseInt(config()['APP_PORT'])
 
-router.get('/', (ctx: any) => {
-  ctx.response.status = Status.OK,
-  ctx.response.type = 'json'
-  ctx.response.body = {
-    status: 'success',
-    message: 'Kaixo mundua!',
-    data: null
-  }
+const server = new Drash.Http.Server({
+  response_output: 'application/json',
+  resources: [HomeResource],
+  logger: new Drash.CoreLoggers.ConsoleLogger({
+    enabled: true,
+    level: "all",
+    tag_string: "{datetime} | {level} |",
+    tag_string_fns: {
+      datetime() {
+        return new Date().toISOString().replace("T", " ");
+      },
+    },
+  }),
 })
 
-app
-  .use(logger)
-  .use(timer)
-  .use(router.routes())
-  .use(routes.routes())
-
-console.log('app running -> http://localhost:1992')
-await app.listen({ port: 1992 })
+server.run({
+  hostname: 'deno_api',
+  port: port
+})
+console.log(`Server listening on ${server.hostname}:${server.port}`);
