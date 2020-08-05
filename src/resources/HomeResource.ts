@@ -1,14 +1,13 @@
-import { Drash } from "../../depts.ts"
-import db from '../db/mysql.ts'
+import BaseResource from './BaseResource.ts'
 
-export default class HomeResource extends Drash.Http.Resource {
+export default class HomeResource extends BaseResource
+{
   static paths = [
     '/'
   ]
 
   public async GET() {
-    const blogs: any = (await db.execute('SELECT * FROM blogs')).rows
-    this.response.body = blogs
+    this.response.body = 'kaixo'
 
     return this.response
   }
